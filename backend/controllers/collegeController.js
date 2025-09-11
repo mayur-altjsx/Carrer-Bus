@@ -1,4 +1,4 @@
-// controllers/apiController.js
+
 const axios = require('axios');
 const apiUrl = 'https://college-data-glhv.onrender.com'
 
