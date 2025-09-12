@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const API = axios.create({
-  baseURL: "http://localhost:3000/api", // adjust if your backend runs on another port
+  baseURL: "https://sih-73ja.onrender.com/api", // adjust if your backend runs on another port
 });
 
 // Example: attach token if you later add auth
