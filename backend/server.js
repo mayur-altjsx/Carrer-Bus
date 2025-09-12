@@ -11,7 +11,11 @@ connectDB();
 
 const app = express();
 
-app.use(cors());
+app.use(cors({
+  origin: 'https://carrer-bus.vercel.app', // allow only your frontend
+  credentials: true
+}));
+
 app.use(express.json());
 
 // routes
