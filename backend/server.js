@@ -12,7 +12,9 @@ connectDB();
 const app = express();
 
 app.use(cors({
-  origin: 'https://carrer-bus.vercel.app', // allow only your frontend
+  origin: 'https://carrer-bus.vercel.app', 
+   // allow only your frontend
+  origin: 'http://localhost:5173',
   credentials: true
 }));
 
