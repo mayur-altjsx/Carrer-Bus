@@ -165,10 +165,10 @@ const CardNav = ({
             type="button"
             className="card-nav-cta-button hidden md:inline-flex border-0 rounded-[calc(0.75rem-0.2rem)] px-4 h-full font-medium cursor-pointer transition-colors duration-300 items-center justify-center flex"
             style={{ backgroundColor: buttonBgColor, color: buttonTextColor }}
-            onClick={() => navigate('/home')}
+            onClick={() => navigate(-1)}
 
           >
-            Home
+            Go Back
           </button>
         </div>
 

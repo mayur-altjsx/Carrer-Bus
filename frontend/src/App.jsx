@@ -1,13 +1,13 @@
 import { Routes, Route } from "react-router-dom";
 import Header from "./components/LanndingHeader";
-import Footer from "./components/Footer";
+//import Footer from "./components/Footer";
 
 import Landing from "./pages/Landing";
 import LoginStudent from "./pages/LoginStudent";
 import LoginAdvisor from "./pages/LoginAdvisor";
 import SignupStudent from "./pages/SingupStudent";
 import SignupAdvisor from "./pages/SingupAdvisor";
-
+import UnderConstruction from "./components/UnderConstruction";
 import Home from "./pages/Home";
 import Colleges from "./pages/Colleges";
 import Courses from "./pages/Courses";
@@ -29,7 +29,7 @@ function App() {
           <Route path="/login/advisor" element={<LoginAdvisor />} />
           <Route path="/signup/student" element={<SignupStudent />} />
           <Route path="/signup/advisor" element={<SignupAdvisor />} />
-          
+          <Route path="/404/404/too-early/here/lol" element={<UnderConstruction />} />
 
           <Route path="/home" element={<Home />} />
           <Route path="/colleges" element={<Colleges />} />
@@ -42,7 +42,7 @@ function App() {
           <Route path="/profile" element={<Profile />} />
         </Routes>
       </main>
-      <Footer />
+      {/* <Footer /> */}
     </div>
   );
 }

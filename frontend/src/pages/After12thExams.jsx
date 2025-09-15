@@ -1,63 +1,80 @@
+import { useEffect, useState } from "react";
+import API from "../api";
 import DashboardHeader from "../components/DashboardHeader";
 
-const examsAfter12th = {
-  science: {
-    engineering: ["JEE Main", "JEE Advanced", "BITSAT", "VITEEE", "COMEDK UGET", "SRMJEEE"],
-    medical: ["NEET (MBBS, BDS, BAMS, BHMS, BUMS)", "AIIMS", "JIPMER", "AFMC"],
-    architecture: ["NATA", "JEE Main (B.Arch)"],
-    scienceDegrees: ["CUET (central universities)", "State-level entrance exams"],
-    agriculture: ["ICAR AIEEA"],
-    defence: ["NDA (PCM required for Air Force & Navy)"],
-  },
-  commerce: {
-    accountancy: ["CA Foundation (CPT)", "CS Foundation"],
-    management: [
-      "IPMAT",
-      "DU JAT",
-      "SET",
-      "CUET",
-      "NPAT",
-      "CLAT (for BBA LLB)",
-      "State-level management exams",
-    ],
-    law: ["CLAT", "AILET", "State-level Law Exams"],
-    ugManagement: ["BBA/BMS entrance exams", "University-specific tests"],
-  },
-  arts: {
-    law: ["CLAT", "AILET", "State-level Law Exams"],
-    design: ["NIFT (Fashion)", "NID (Design)"],
-    hotelManagement: ["NCHMCT JEE"],
-    liberalArts: ["CUET", "University-specific exams"],
-    mediaAndSocialWork: ["College/university-specific entrance exams"],
-  },
-  common: {
-    university: ["CUET (for central & state universities)"],
-    abroad: ["SAT (for studying abroad)"],
-    govtJobs: ["SSC CHSL", "RRB NTPC", "State PSC/Clerk/Constable Exams"],
-    defence: ["NDA", "Indian Armed Forces (subject-specific eligibility)"],
-  },
-};
-
 function After12thExams() {
+  const [examsAfter12th, setExamsAfter12th] = useState({});
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const fetchExams = async () => {
+      try {
+        const token = localStorage.getItem("token");
+        if (!token) {
+          setError("Authorization token is missing.");
+          setLoading(false);
+          return;
+        }
+
+        const response = await API.get("/exams/after-12th", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        setExamsAfter12th(response.data);
+        setLoading(false);
+      } catch (err) {
+        console.error("Error fetching after-12th exams:", err);
+        setError("Failed to fetch exams data");
+        setLoading(false);
+      }
+    };
+
+    fetchExams();
+  }, []);
+
+  if (loading) return <div className="text-center mt-10">Loading exams...</div>;
+  if (error) return <div className="text-center text-red-500 mt-10">{error}</div>;
+
   return (
-    <div>
+    <div className="px-6 md:px-12 lg:px-20 py-12 bg-gray-50 min-h-screen">
       <DashboardHeader />
-      <h2>Exams After 12th</h2>
+
+      <h2 className="text-2xl font-bold mb-8 text-center">Exams After 12th</h2>
 
       {Object.entries(examsAfter12th).map(([stream, categories]) => (
-        <section key={stream}>
-          <h3>{stream.toUpperCase()}</h3>
-          {Object.entries(categories).map(([cat, exams]) => (
-            <div key={cat}>
-              <h4>{cat}</h4>
-              <ul>
-                {exams.map((exam) => (
-                  <li key={exam}>{exam}</li>
-                ))}
-              </ul>
-            </div>
-          ))}
-        </section>
+        <div key={stream} className="mb-12">
+          <h3 className="text-xl font-semibold mb-4 text-gray-700 uppercase">{stream}</h3>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {Object.entries(categories).map(([category, exams]) => (
+              <div
+                key={category}
+                className="bg-white shadow-md rounded-lg p-6 border border-gray-200 flex flex-col justify-between"
+              >
+                <div>
+                  <span className="inline-block bg-orange-500 text-white text-xs font-semibold px-3 py-1 rounded-full mb-2 capitalize">
+                    {category.replace(/([A-Z])/g, " $1")}
+                  </span>
+                  <h4 className="text-lg font-bold text-gray-800 mb-2">
+                    {category.replace(/([A-Z])/g, " $1")}
+                  </h4>
+                  <ul className="list-disc list-inside text-sm text-gray-600 space-y-1">
+                    {exams.map((exam) => (
+                      <li key={exam}>{exam}</li>
+                    ))}
+                  </ul>
+                </div>
+
+                <button className="mt-6 bg-teal-600 hover:bg-teal-700 text-white text-sm font-medium py-2 px-4 rounded">
+                  Explore Details
+                </button>
+              </div>
+            ))}
+          </div>
+        </div>
       ))}
     </div>
   );

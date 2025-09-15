@@ -1,54 +1,76 @@
+import { useEffect, useState } from "react";
+import API from "../api";
 import DashboardHeader from "../components/DashboardHeader";
 
-const examsAfter10th = {
-  governmentJobAndRecruitment: {
-    SSC_MTS: "Entry-level posts in central government offices.",
-    RRB_GroupD: "Technical and non-technical staff positions in Indian Railways.",
-    IndianArmy: "Soldier (General Duty/Tradesman) recruitment in Defence sector.",
-    IndianNavy: "Matric Recruit (MR): Entry as Sailor/Technician.",
-    StatePolice: "Constable/Home Guard: Entry-level police posts (state exam).",
-    ForestGuard: "Forest Guard/Technician roles in forestry and wildlife.",
-    PSU_Helper:
-      "Public Sector Units helper/technician roles (ONGC, BHEL, DRDO, ISRO) often requiring ITI/technical skill.",
-  },
-  competitiveAndScholarship: {
-    NTSE: "National-level scholarship for talented students.",
-    KVPY: "Research fellowships for aspiring scientists (now under INSPIRE).",
-    Olympiads: "Science, Math, English, Cyber, GK (SOF/ISEA).",
-    TalentExams: "All India Mathematics/Science Talent Exams at national/state levels.",
-    JNVST: "Navodaya Vidyalaya admission test for gifted students.",
-  },
-  polytechnicAndDiploma: {
-    statePolytechnic:
-      "State Polytechnic Entrance Exams (e.g., JEECUP, Delhi CET, AP POLYCET).",
-    ITI: "ITI Entrance: Vocational courses (Electrician, Mechanic, Computer Operator, etc.).",
-    IMU_CET:
-      "Indian Maritime University CET for Marine Engineering/Navigational Science (some after 12th, some after 10th).",
-  },
-  specializedExams: {
-    sainikMilitary: "Sainik School & Military School Admissions (defence-prep).",
-    RMO: "Regional Mathematics Olympiad, qualifying for national rounds.",
-    biotechOlympiad: "National Biotechnology Olympiad for biosciences.",
-  },
-};
-
 function After10thExams() {
+  const [examsAfter10th, setExamsAfter10th] = useState({});
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const fetchExams = async () => {
+      try {
+        const token = localStorage.getItem("token");
+        if (!token) {
+          setError("Authorization token is missing.");
+          setLoading(false);
+          return;
+        }
+
+        const response = await API.get("/exams/after-10th", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        setExamsAfter10th(response.data);
+        setLoading(false);
+      } catch (err) {
+        setError("Failed to fetch courses data");
+        setLoading(false);
+      }
+    };
+
+    fetchExams();
+  }, []);
+
+  if (loading) return <div className="text-center mt-10">Loading exams...</div>;
+  if (error) return <div className="text-center text-red-500 mt-10">{error}</div>;
+
   return (
-    <div>
+    <div className="px-6 md:px-12 lg:px-20 py-12 bg-gray-50 min-h-screen">
       <DashboardHeader />
-      <h2>Exams After 10th</h2>
+
+      <h2 className="text-2xl font-bold mb-8 text-center">Exams After 10th</h2>
 
       {Object.entries(examsAfter10th).map(([category, exams]) => (
-        <section key={category}>
-          <h3>{category.replace(/([A-Z])/g, " $1")}</h3>
-          <ul>
-            {Object.entries(exams).map(([key, desc]) => (
-              <li key={key}>
-                <b>{key}:</b> {desc}
-              </li>
+        <div key={category} className="mb-12">
+          <h3 className="text-xl font-semibold mb-4 text-gray-700">
+            {category.replace(/([A-Z])/g, " $1")}
+          </h3>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {Object.entries(exams).map(([examName, description]) => (
+              <div
+                key={examName}
+                className="bg-white shadow-md rounded-lg p-6 border border-gray-200 flex flex-col justify-between"
+              >
+                <div>
+                  <span className="inline-block bg-orange-500 text-white text-xs font-semibold px-3 py-1 rounded-full mb-2">
+                    {category.replace(/([A-Z])/g, " ").trim()}
+                  </span>
+                  <h4 className="text-lg font-bold text-gray-800 mb-2">
+                    {examName}
+                  </h4>
+                  <p className="text-sm text-gray-600">{description}</p>
+                </div>
+                <button className="mt-6 bg-teal-600 hover:bg-teal-700 text-white text-sm font-medium py-2 px-4 rounded">
+                  Explore Details
+                </button>
+              </div>
             ))}
-          </ul>
-        </section>
+          </div>
+        </div>
       ))}
     </div>
   );

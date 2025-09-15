@@ -1,21 +1,28 @@
-import { useLocation, Link } from "react-router-dom";
+import { useLocation, Link, useNavigate } from "react-router-dom";
 import CardNav from "./CardNav";
 //import logo from "./logo.svg";
 
 function DashboardHeader() {
   const location = useLocation();
+  const navigate = useNavigate();
 
   // Only show inside dashboard sections
   const isHomeSection =
     location.pathname.startsWith("/home") ||
     location.pathname.startsWith("/colleges") ||
     location.pathname.startsWith("/courses") ||
-    location.pathname.startsWith("/exams") ||
-    location.pathname.startsWith("/profile");
+    location.pathname.startsWith("/exams");
+    //location.pathname.startsWith("/profile");
 
   if (!isHomeSection) return null;
 
+  // Go back function
+  const handleGoBack = () => {
+    navigate(-1); // This goes back to the previous page in history
+  };
+
   const items = [
+    
     {
       label: "Colleges",
       bgColor: "#0D0716",
@@ -43,15 +50,15 @@ function DashboardHeader() {
         //{ label: "Results", ariaLabel: "Exam Results", to: "/exams?tab=results" }
       ]
     },
-    {
-      label: "Profile",
-      bgColor: "#371E27",
-      textColor: "#fff",
-      links: [
-        { label: "My Profile", ariaLabel: "View Profile", to: "/profile" },
-        //{ label: "Settings", ariaLabel: "Profile Settings", to: "/profile/settings" }
-      ]
-    }
+    // {
+    //   label: "Profile",
+    //   bgColor: "#371E27",
+    //   textColor: "#fff",
+    //   links: [
+    //     { label: "My Profile", ariaLabel: "View Profile", to: "/profile" },
+    //     //{ label: "Settings", ariaLabel: "Profile Settings", to: "/profile/settings" }
+    //   ]
+    // }
   ];
 
   return (
