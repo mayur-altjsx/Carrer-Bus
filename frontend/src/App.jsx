@@ -17,6 +17,8 @@ import After10thCourses from "./pages/After10thCourses";
 import After12thCourses from "./pages/After12thCourses";
 import After10thExams from "./pages/After10thExams";
 import After12thExams from "./pages/After12thExams";
+import TestRoute from "./pages/Test";
+import AfterTestInfo from "./pages/AfterTestInfo";
 
 function App() {
   return (
@@ -30,7 +32,7 @@ function App() {
           <Route path="/signup/student" element={<SignupStudent />} />
           <Route path="/signup/advisor" element={<SignupAdvisor />} />
           <Route path="/404/404/too-early/here/lol" element={<UnderConstruction />} />
-
+          <Route path="/test" element={<TestRoute />} />
           <Route path="/home" element={<Home />} />
           <Route path="/colleges" element={<Colleges />} />
           <Route path="/courses" element={<Courses />} />
@@ -40,6 +42,7 @@ function App() {
           <Route path="/exams/after-10th" element={<After10thExams />} />
           <Route path="/exams/after-12th" element={<After12thExams />} />
           <Route path="/profile" element={<Profile />} />
+          <Route path="/after-test-info" element={<AfterTestInfo />} />
         </Routes>
       </main>
       {/* <Footer /> */}

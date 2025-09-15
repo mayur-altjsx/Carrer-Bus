@@ -6,7 +6,7 @@ const studentSchema = new mongoose.Schema({
   email: { type: String, required: true, unique: true },
   password: { type: String, required: true },
   studyingIn: { type: String, required: true },
-  gender: { type: String, required: true, enum: ["male","female"] },
+  gender: { type: String, required: true, enum: ["Male","Female"] },
   age: { type: Number, required: true },
   city: { type: String, required: true },
   contactNumber: { type: String, required: true },
