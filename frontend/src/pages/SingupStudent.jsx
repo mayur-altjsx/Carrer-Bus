@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Eye, EyeOff } from "lucide-react";
+import { Link } from "react-router-dom"; 
 
 function SignupStudent() {
   const [form, setForm] = useState({
@@ -217,12 +218,12 @@ function SignupStudent() {
 
         <p className="mt-6 text-center text-sm text-gray-600">
           Already have an account?{" "}
-          <a 
-            href="/login/student" 
+          <Link
+            to="/login/student" 
             className="text-violet-600 font-medium hover:text-violet-700 focus:outline-none focus:underline"
           >
             Sign in here
-          </a>
+          </Link>
         </p>
       </div>
     </div>
