@@ -1,4 +1,5 @@
 import { GraduationCap, Users, Brain, ArrowRight, CheckCircle, Star, BookOpen, Target, MessageCircle } from "lucide-react";
+import { Link } from "react-router-dom"; // Add this import
 
 function Landing() {
   return (
@@ -16,19 +17,19 @@ function Landing() {
               Get personalized course recommendations, connect with expert advisors, and discover your ideal career through AI-powered assessments.
             </p>
             <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center px-2">
-              <a 
-                href="/signup/student" 
+              <Link 
+                to="/signup/student" 
                 className="inline-flex items-center justify-center px-6 sm:px-8 py-3 sm:py-4 bg-purple-600 hover:bg-purple-700 text-white rounded-xl font-semibold text-base sm:text-lg transition-all transform hover:scale-105 shadow-lg hover:shadow-xl min-h-[48px]"
               >
                 Start Your Journey
                 <ArrowRight className="ml-2 h-4 w-4 sm:h-5 sm:w-5" />
-              </a>
-              <a 
-                href="/login/student" 
+              </Link>
+              <Link 
+                to="/login/student" 
                 className="inline-flex items-center justify-center px-6 sm:px-8 py-3 sm:py-4 border-2 border-purple-600 text-purple-600 hover:bg-purple-600 hover:text-white rounded-xl font-semibold text-base sm:text-lg transition-all min-h-[48px]"
               >
                 Take Assessment
-              </a>
+              </Link>
             </div>
           </div>
         </div>
@@ -161,13 +162,13 @@ function Landing() {
           <p className="text-lg sm:text-xl text-purple-100 mb-6 sm:mb-8 px-2">
             Join thousands of students who have found their perfect career path with our guidance.
           </p>
-          <a 
-            href="/signup/student" 
+          <Link 
+            to="/signup/student" 
             className="inline-flex items-center justify-center px-6 sm:px-8 py-3 sm:py-4 bg-white text-purple-600 hover:bg-gray-100 rounded-xl font-semibold text-base sm:text-lg transition-all transform hover:scale-105 shadow-lg min-h-[48px]"
           >
             Get Started Today
             <ArrowRight className="ml-2 h-4 w-4 sm:h-5 sm:w-5" />
-          </a>
+          </Link>
         </div>
       </section>
 
