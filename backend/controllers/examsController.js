@@ -3,7 +3,7 @@
 // 🔹 Exams after 10th
 exports.getExamsAfter10th = (req, res) => {
   const data = {
-    governmentJobAndRecruitment: {
+    GovernmentJobandRecruitment: {
       SSC_MTS: "Entry-level posts in central government offices.",
       RRB_GroupD: "Technical and non-technical staff positions in Indian Railways.",
       IndianArmy: "Soldier (General Duty/Tradesman) recruitment in Defence sector.",
@@ -12,19 +12,19 @@ exports.getExamsAfter10th = (req, res) => {
       ForestGuard: "Forest Guard/Technician roles in forestry and wildlife.",
       PSU_Helper: "Public Sector Units helper/technician roles (ONGC, BHEL, DRDO, ISRO) often requiring ITI/technical skill."
     },
-    competitiveAndScholarship: {
+    CompetitiveandScholarship: {
       NTSE: "National-level scholarship for talented students.",
       KVPY: "Research fellowships for aspiring scientists (now under INSPIRE).",
       Olympiads: "Science, Math, English, Cyber, GK (SOF/ISEA).",
       TalentExams: "All India Mathematics/Science Talent Exams at national/state levels.",
       JNVST: "Navodaya Vidyalaya admission test for gifted students."
     },
-    polytechnicAndDiploma: {
+    PolytechnicandDiploma: {
       statePolytechnic: "State Polytechnic Entrance Exams (e.g., JEECUP, Delhi CET, AP POLYCET).",
       ITI: "ITI Entrance: Vocational courses (Electrician, Mechanic, Computer Operator, etc.).",
       IMU_CET: "Indian Maritime University CET for Marine Engineering/Navigational Science (some after 12th, some after 10th)."
     },
-    specializedExams: {
+    SpecializedExams: {
       sainikMilitary: "Sainik School & Military School Admissions (defence-prep).",
       RMO: "Regional Mathematics Olympiad, qualifying for national rounds.",
       biotechOlympiad: "National Biotechnology Olympiad for biosciences."
