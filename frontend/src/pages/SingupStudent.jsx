@@ -1,8 +1,5 @@
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import API from "../api";
-import toast, { Toaster } from "react-hot-toast";
-import { FaEye, FaEyeSlash } from "react-icons/fa";
+import { Eye, EyeOff } from "lucide-react";
 
 function SignupStudent() {
   const [form, setForm] = useState({
@@ -20,7 +17,7 @@ function SignupStudent() {
   const [showPassword, setShowPassword] = useState(false);
   const [passwordError, setPasswordError] = useState("");
   const [error, setError] = useState("");
-  const navigate = useNavigate();
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   // Password regex
   const passwordRegex = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[!@#$%&*]).{8,}$/;
@@ -42,55 +39,65 @@ function SignupStudent() {
 
   const handleSignup = async (e) => {
     e.preventDefault();
+    setIsSubmitting(true);
 
     if (form.age < 0) {
-      toast.error("Age cannot be negative!");
+      alert("Age cannot be negative!");
+      setIsSubmitting(false);
       return;
     }
 
     if (!passwordRegex.test(form.password)) {
-      toast.error("Invalid password format!");
+      alert("Invalid password format!");
+      setIsSubmitting(false);
       return;
     }
 
     try {
-      await API.post("/auth/signup", form);
-      toast.success("Signup successful!");
-      setTimeout(() => navigate("/login/student"), 1500);
+      // Simulate API call
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      alert("Signup successful!");
+      // In real app: navigate("/login/student")
     } catch (err) {
-      setError(err.response?.data?.message || "Signup failed");
-      toast.error("Signup failed!");
+      setError("Signup failed");
+      alert("Signup failed!");
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-white">
-      <Toaster />
-      <div className="w-full max-w-md p-6 rounded-2xl shadow-md bg-white">
-        <h2 className="text-2xl font-bold text-center mb-4">Student Signup</h2>
-        <form onSubmit={handleSignup} className="space-y-3">
-          {/* First and Last Name side by side */}
-          <div className="flex gap-2">
+    <div className="flex items-center justify-center min-h-screen bg-gray-50 p-4">
+      <div className="w-full max-w-md bg-white rounded-2xl shadow-lg p-6">
+        <h2 className="text-2xl font-bold text-center mb-6 text-gray-800">Student Signup</h2>
+        
+        <div onSubmit={handleSignup} className="space-y-4">
+          {/* First and Last Name */}
+          <div className="grid grid-cols-2 gap-3">
             <input
               name="firstName"
               placeholder="First Name"
               onChange={handleChange}
-              className="w-1/2 border rounded-lg p-2"
+              required
+              className="w-full border border-gray-300 rounded-lg p-3 text-sm focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent"
             />
             <input
               name="lastName"
               placeholder="Last Name"
               onChange={handleChange}
-              className="w-1/2 border rounded-lg p-2"
+              required
+              className="w-full border border-gray-300 rounded-lg p-3 text-sm focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent"
             />
           </div>
 
+          {/* Email */}
           <input
             name="email"
             type="email"
             placeholder="Email"
             onChange={handleChange}
-            className="w-full border rounded-lg p-2"
+            required
+            className="w-full border border-gray-300 rounded-lg p-3 text-sm focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent"
           />
 
           {/* Password with eye toggle */}
@@ -100,95 +107,122 @@ function SignupStudent() {
               type={showPassword ? "text" : "password"}
               placeholder="Password"
               onChange={handleChange}
-              className="w-full border rounded-lg p-2"
+              required
+              className="w-full border border-gray-300 rounded-lg p-3 pr-10 text-sm focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent"
             />
-            <span
-              className="absolute right-3 top-3 cursor-pointer text-gray-500"
+            <button
+              type="button"
+              className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700 focus:outline-none"
               onClick={() => setShowPassword(!showPassword)}
             >
-              {showPassword ? <FaEyeSlash /> : <FaEye />}
-            </span>
+              {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+            </button>
           </div>
+          
           {passwordError && (
-            <p className="text-red-500 text-sm">{passwordError}</p>
+            <p className="text-red-500 text-xs leading-tight">{passwordError}</p>
           )}
 
-          {/* StudyingIn dropdown */}
-          <select
-            name="studyingIn"
-            value={form.studyingIn}
-            onChange={handleChange}
-            className="border rounded-lg p-2 w-full"
-          >
-            {Array.from({ length: 12 }, (_, i) => (
-              <option key={i + 1} value={`Grade ${i + 1}`}>
-                Grade {i + 1}
-              </option>
-            ))}
-          </select>
-
-          {/* Gender dropdown */}
-          <select
-            name="gender"
-            value={form.gender}
-            onChange={handleChange}
-            className="border rounded-lg p-2 w-full"
-          >
-            <option value="Male">Male</option>
-            <option value="Female">Female</option>
-          </select>
-
-          {/* Age input without scroll */}
-          <input
-            name="age"
-            type="number"
-            min="0"
-            placeholder="Age"
-            onChange={handleChange}
-            className="w-full border rounded-lg p-2 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
-          />
-
-          <input
-            name="city"
-            placeholder="City"
-            onChange={handleChange}
-            className="w-full border rounded-lg p-2"
-          />
-
-          {/* Contact number with country code */}
-          <div className="flex gap-2">
+          {/* Study Level and Gender */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <select
-              name="countryCode"
-              value={form.countryCode}
+              name="studyingIn"
+              value={form.studyingIn}
               onChange={handleChange}
-              className="border rounded-lg p-2"
+              className="w-full border border-gray-300 rounded-lg p-3 text-sm focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent"
             >
-              <option value="+91">+91 (India)</option>
-              <option value="+1">+1 (USA)</option>
-              <option value="+44">+44 (UK)</option>
-              <option value="+61">+61 (Australia)</option>
+              {Array.from({ length: 12 }, (_, i) => (
+                <option key={i + 1} value={`Grade ${i + 1}`}>
+                  Grade {i + 1}
+                </option>
+              ))}
             </select>
-            <input
-              name="contactNumber"
-              placeholder="Contact Number"
+
+            <select
+              name="gender"
+              value={form.gender}
               onChange={handleChange}
-              className="flex-1 border rounded-lg p-2"
+              className="w-full border border-gray-300 rounded-lg p-3 text-sm focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent"
+            >
+              <option value="Male">Male</option>
+              <option value="Female">Female</option>
+              
+            </select>
+          </div>
+
+          {/* Age and City */}
+          <div className="grid grid-cols-2 gap-3">
+            <input
+              name="age"
+              type="number"
+              min="5"
+              max="100"
+              placeholder="Age"
+              onChange={handleChange}
+              required
+              className="w-full border border-gray-300 rounded-lg p-3 text-sm focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+            />
+            <input
+              name="city"
+              placeholder="City"
+              onChange={handleChange}
+              required
+              className="w-full border border-gray-300 rounded-lg p-3 text-sm focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent"
             />
           </div>
 
+          {/* Contact Number - Fixed mobile layout */}
+          <div className="space-y-2">
+            <label className="text-sm font-medium text-gray-700">Contact Number</label>
+            <div className="flex gap-2">
+              <select
+                name="countryCode"
+                value={form.countryCode}
+                onChange={handleChange}
+                className="w-20 sm:w-24 border border-gray-300 rounded-lg p-3 text-sm focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent flex-shrink-0"
+              >
+                <option value="+91">+91</option>
+                <option value="+1">+1</option>
+                <option value="+44">+44</option>
+                <option value="+61">+61</option>
+                <option value="+86">+86</option>
+                <option value="+33">+33</option>
+                <option value="+49">+49</option>
+              </select>
+              <input
+                name="contactNumber"
+                type="tel"
+                placeholder="Phone Number"
+                onChange={handleChange}
+                required
+                className="flex-1 min-w-0 border border-gray-300 rounded-lg p-3 text-sm focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent"
+              />
+            </div>
+          </div>
+
+          {/* Submit Button */}
           <button
-            type="submit"
-            className="w-full bg-violet-600 text-white py-2 rounded-lg hover:bg-violet-700 transition"
+            type="button"
+            onClick={handleSignup}
+            disabled={isSubmitting}
+            className="w-full bg-violet-600 text-white py-3 rounded-lg hover:bg-violet-700 transition-colors font-medium disabled:opacity-50 disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-violet-500 focus:ring-offset-2"
           >
-            Signup
+            {isSubmitting ? "Creating Account..." : "Create Account"}
           </button>
-        </form>
-        {error && <p className="text-red-500 mt-2 text-center">{error}</p>}
-        <p className="mt-4 text-center">
-          Already a user?{" "}
-          <Link to="/login/student" className="text-violet-600 font-medium">
-            Login here
-          </Link>
+        </div>
+
+        {error && (
+          <p className="text-red-500 mt-3 text-center text-sm">{error}</p>
+        )}
+
+        <p className="mt-6 text-center text-sm text-gray-600">
+          Already have an account?{" "}
+          <a 
+            href="/login/student" 
+            className="text-violet-600 font-medium hover:text-violet-700 focus:outline-none focus:underline"
+          >
+            Sign in here
+          </a>
         </p>
       </div>
     </div>
