@@ -46,7 +46,7 @@ function After10thExams() {
       {Object.entries(examsAfter10th).map(([category, exams]) => (
         <div key={category} className="mb-12">
           <h3 className="text-xl font-semibold mb-4 text-gray-700">
-            {category.replace(/([A-Z])/g, " $1")}
+            {category.replace(/([A-Z])/g, " $1").replace(/and/g, " and").trim()}
           </h3>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -57,7 +57,7 @@ function After10thExams() {
               >
                 <div>
                   <span className="inline-block bg-orange-500 text-white text-xs font-semibold px-3 py-1 rounded-full mb-2">
-                    {category.replace(/([A-Z])/g, " ").trim()}
+                    {category.replace(/([A-Z])/g, " $1").replace(/and/g, " and").trim()}
                   </span>
                   <h4 className="text-lg font-bold text-gray-800 mb-2">
                     {examName}

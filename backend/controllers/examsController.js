@@ -20,7 +20,7 @@ exports.getExamsAfter10th = (req, res) => {
       JNVST: "Navodaya Vidyalaya admission test for gifted students."
     },
     PolytechnicandDiploma: {
-      statePolytechnic: "State Polytechnic Entrance Exams (e.g., JEECUP, Delhi CET, AP POLYCET).",
+      State_Polytechnic: "State Polytechnic Entrance Exams (e.g., JEECUP, Delhi CET, AP POLYCET).",
       ITI: "ITI Entrance: Vocational courses (Electrician, Mechanic, Computer Operator, etc.).",
       IMU_CET: "Indian Maritime University CET for Marine Engineering/Navigational Science (some after 12th, some after 10th)."
     },

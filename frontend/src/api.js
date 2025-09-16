@@ -4,6 +4,7 @@ const API = axios.create({
   baseURL: "https://sih-73ja.onrender.com/api", // adjust if your backend runs on another port
 });
 
+
 // Example: attach token if you later add auth
 // API.interceptors.request.use((req) => {
 //   const token = localStorage.getItem("token");
