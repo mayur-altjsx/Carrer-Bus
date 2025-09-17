@@ -4,6 +4,11 @@ const fs = require('fs');
 const bodyParser = require('body-parser');
 const swaggerUi = require("swagger-ui-express");
 const swaggerDocument = require("./swagger.json");
+const cors = require('cors');
+
+// Middleware
+
+app.use(cors());
 
 
 const app = express();
@@ -62,6 +67,14 @@ function createTypeRoutes(type) {
     res.json(filteredColleges);
   });
 
+
+  app.use(cors());
+  app.use(cors({
+    origin: 'https://carrer-bus.vercel.app', 
+     
+    
+    credentials: true
+  }));
   app.get(`/${type}_colleges/city=:city`, (req, res) => {
     const { city } = req.params;
     const { state } = req.query; // Get state from query parameters
